@@ -11,18 +11,22 @@ It connects:
 Because AHB and APB have **different protocols and timing requirements**, the bridge performs **protocol conversion**.
 ** 1.1 Architecture of AHB to APB Bridge**
 
+<img width="649" height="272" alt="image" src="https://github.com/user-attachments/assets/76da7a20-afcd-4550-b922-4f96713027c6" />
+
+
 The Architecture of AHB to APB is given on the Figure 2. As shown in figure 2 architecture has three modules. In this Architecture data will transfer from APB master to AHB slave Bridge. FSM is used for interface between low bandwidth APB and high bandwidth AHB. Pipelining structure is use in FSM to transfer data from APB to AHB.A wait state is use transfer data to or from APB ,because APB has low bandwidth so its transfer speed is slow, so AHB need to wait until APB complete the read or write . In AMBA based AHB master will initialize the operation by sending address and control signal to AHB Slave. After that AHB Slave will send read and write data to AHB master as per the address and control given by AHB slave. Then AHB master will send Hready signal to AHB slave, which indicate that transfer has done.
 
 
 Figure 2: Architecture of AHB to APB Bridge
 
 ---
-** 2.AHB to APB Bridge**
+## 2. AHB to APB Bridge
 The AHBtoAPB Bridge is an AHB slave, providing an interface between the high-speed AHB and the low-power APB. Read and write transfers on the AHB are converted into equivalent transfers on the APB. As the APB is not pipelined, then wait states are added during transfers to and from the APB when the AHB is required to wait for the APB.
 The main sections of this module are:
 • AHB slave bus interface
 • APB transfer state machine, which is independent of the device memory map
 • APB output signal generation.
+
 <img width="616" height="436" alt="image" src="https://github.com/user-attachments/assets/3cc08267-759a-4a44-a9fd-71a7b3fcd7fc" />
 
 Figure 3: Block Diagram of AHB to APB Bridge
@@ -59,6 +63,7 @@ Above Figure shows a single master AHB system design with the AHB master and thr
 
 **3.1 AHB Master Inteface :**
 A master provides address and control information to initiate read and write operations. Figure 4 shows a master interface.
+
 <img width="734" height="272" alt="image" src="https://github.com/user-attachments/assets/f7c5cb36-9544-4027-8b6d-05bc55364c29" />
 
 Figure 7: AHB Master Interface
@@ -87,23 +92,12 @@ You can use it to access the programmable control registers of peripheral device
 
 ---
 
-## **Functional Goal**
+## Functional Goal
 
 To transfer read/write transactions from the AHB bus to APB-compatible signals while maintaining correct timing and handshaking.
 
 ---
-
-## **Top-Level Architecture**
-
-The bridge consists of :
-<img width="649" height="272" alt="image" src="https://github.com/user-attachments/assets/e76c6c94-4fb8-4a88-b948-6277920fe7d4" />
-
-
-Let’s now go deeper into each block �
-
----
-
-## 1️ **AHB Interface Block**
+## 1️. AHB Interface Block
 
 ### **Purpose**
 
@@ -132,7 +126,7 @@ Let’s now go deeper into each block �
 | `HREADYOUT`    | Output    | Indicates bridge ready for next transfer |
 | `HRESP`        | Output    | Response signal (OKAY or ERROR)          |
 
-### **Sub-blocks inside AHB Interface**
+### Sub-blocks inside AHB Interface
 
 1. **Address Latch** — Captures `HADDR` when a valid transfer starts (`HTRANS[1]` = 1).
 2. **Write Data Register** — Stores data from `HWDATA` for APB write phase.
@@ -140,9 +134,9 @@ Let’s now go deeper into each block �
 
 ---
 
-## **Control Logic Block (Bridge Core FSM)**
+## Control Logic Block (Bridge Core FSM)
 
-### **Purpose**
+### Purpose
 
 * Controls the sequence of APB operations (SETUP → ENABLE → IDLE).
 * Manages AHB handshaking (HREADYOUT).
@@ -177,7 +171,7 @@ Let’s now go deeper into each block �
        +--------+
 ```
 
-### **FSM States**
+### FSM States
 
 | State      | Description                    | Outputs                                                             |
 | ---------- | ------------------------------ | ------------------------------------------------------------------- |
@@ -187,14 +181,14 @@ Let’s now go deeper into each block �
 
 ---
 
-##  **APB Interface Block**
+## APB Interface Block
 
-### **Purpose**
+### Purpose
 
 * Drive signals to APB slave devices.
 * Convert control and data into APB-compatible signals.
 
-### **APB Signals Generated**
+### APB Signals Generated
 
 | Signal         | Direction | Description                           |
 | -------------- | --------- | ------------------------------------- |
@@ -209,7 +203,7 @@ Let’s now go deeper into each block �
 
 ---
 
-## ⚙️ **Data Flow Summary**
+##  **Data Flow Summary**
 
 | Step | Operation            | AHB Signals           | APB Signals          | FSM State |
 | ---- | -------------------- | --------------------- | -------------------- | --------- |
@@ -234,6 +228,7 @@ This ensures proper synchronization and data integrity.
 ---
 ## **Synthesis**
 Tools Used: Quartus Prime (for synthesis & RTL Viewer), ModelSim (for simulation & waveform analysis).
+
 <img width="1253" height="545" alt="image" src="https://github.com/user-attachments/assets/121c3876-0fbc-4ac8-adf1-0d9b3fd15a96" />
 
 Figure 9 : RTL View of AHB to APB Bridge Design
